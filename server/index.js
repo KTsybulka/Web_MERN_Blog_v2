@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const dotenv = require('dotenv');
 const app = express();
 const auth_router = require("./router/authRout");
+const User = require('./models/user');
 dotenv.config();
 
 const PORT = process.env.PORT || 8000;
@@ -17,6 +18,7 @@ app.use('/api/auth', auth_router );
 
 app
     .get('/', (req, res) =>{
+        User.find().then(users=>{console.log(users)})//Promis
          res.json({message: 'Fine! '});
     })
 //DB connection

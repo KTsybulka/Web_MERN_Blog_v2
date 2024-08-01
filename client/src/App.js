@@ -8,9 +8,21 @@ import { AddPostPage } from "./pages/AddPostPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { LoginPage02 } from "./pages/LoginPage02";
 import { EditPostPage } from "./pages/EditPostPage";
+import { ToastContainer } from 'react-toastify'; // for error handling
+import 'react-toastify/dist/ReactToastify.css'
+import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
+import { getMe } from './redux/features/auth/authSlice.js'
 
 
 function App() {
+
+  
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+      dispatch(getMe())
+  }, [dispatch])
 
   return (
   
@@ -24,6 +36,8 @@ function App() {
       <Route path="register" element={<RegisterPage />} />
       <Route path='login' element={<LoginPage02 />} />
     </Routes>
+
+    <ToastContainer position='bottom-right' />
   </Layout>
 )}
 
