@@ -6,15 +6,21 @@ const mongoose = require("mongoose");
 const dotenv = require('dotenv');
 const app = express();
 const auth_router = require("./router/authRout");
-const User = require('./models/user');
+const post_router = require("./router/postRout");
+const User = require('./models/User');
+const fileUpload = require('express-fileupload');
 dotenv.config();
 
 const PORT = process.env.PORT || 8000;
 
+//Middleware
 app.use(cors()); // requests from differance API adresses
+app.use(fileUpload())
 app.use(express.json()); // the data will come to server in JSON format
+app.use(express.static('uploads'))
 
 app.use('/api/auth', auth_router );
+app.use('/api/posts', post_router );
 
 app
     .get('/', (req, res) =>{

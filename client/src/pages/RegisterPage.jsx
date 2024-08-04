@@ -16,13 +16,23 @@ export const RegisterPage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    if (status) {
-      toast(status)
-    }
-    if (isAuth) navigate('/')
-  }, [status, isAuth, navigate])
+  // useEffect(() => {
+  //   if (status) {
+  //     toast(status)
+  //   }
+  //   if (isAuth) navigate('/')
+  // }, [status, isAuth, navigate])
 
+  useEffect(() => {
+    console.log('useEffect triggered');
+    if (status) {
+      toast(status);
+    }
+    if (isAuth) {
+      console.log('Navigating to home');
+      navigate('/');
+    }
+  }, [status, isAuth, navigate]);
 
   const handleSubmit = () => {
     try {
@@ -41,7 +51,7 @@ export const RegisterPage = () => {
       className='w-1/4 h-60 mx-auto mt-40'
     >
 
-      <h1 className='text-lg text-white text-center'>Log in</h1>
+      <h1 className='text-lg text-white text-center'>Sign Up</h1>
       <label className='text-xs text-gray-400'>
         Username:
         <input type='text'

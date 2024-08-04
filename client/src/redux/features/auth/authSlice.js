@@ -12,7 +12,8 @@ const initialState = {
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
-  async ({ username, password }) => {
+  // async ({ username, password }) => {
+    async ({ username, password }, { rejectWithValue }) => {
       try {
           const { data } = await axios.post('/auth/signup', {
               username,
@@ -23,28 +24,56 @@ export const registerUser = createAsyncThunk(
           }
           return data
       } catch (error) {
-          console.log(error)
+          // console.log(error)
+          if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data);
+          } else {
+            return rejectWithValue({ message: error.message });
+          }
       }
   },
 )
 
 export const loginUser = createAsyncThunk(
-  'auth/loginUser',
-  async ({ username, password }) => {
-      try {
-          const { data } = await axios.post('/auth/login', {
-              username,
-              password,
-          })
-          if (data.token) {
-              window.localStorage.setItem('token', data.token)
-          }
-          return data
-      } catch (error) {
-          console.log(error)
+  "auth/loginUser",
+  async ({ username, password }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post("/auth/login", {
+        username,
+        password,
+      });
+      if (data.token) {
+        window.localStorage.setItem("token", data.token);
       }
-  },
-)
+      return data;
+    } catch (error) {
+      // Handle error response and reject with appropriate value
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ message: error.message });
+      }
+    }
+  }
+);
+
+// export const loginUser = createAsyncThunk(
+//   'auth/loginUser',
+//   async ({ username, password }) => {
+//       try {
+//           const { data } = await axios.post('/auth/login', {
+//               username,
+//               password,
+//           })
+//           if (data.token) {
+//               window.localStorage.setItem('token', data.token)
+//           }
+//           return data
+//       } catch (error) {
+//           console.log(error)
+//       }
+//   },
+// )
 
 
 export const getMe = createAsyncThunk('auth/getMe', async () => {
@@ -81,7 +110,8 @@ export const authSlice = createSlice({
           state.token = action.payload.token
       })
       .addCase(registerUser.rejected, (state, action) => {
-          state.status = action.error.message
+          // state.status = action.error.message  //old
+          state.status = action.payload?.message || 'Failed to register';
           state.isLoading = false
       })
       // Login user
@@ -96,7 +126,8 @@ export const authSlice = createSlice({
           state.token = action.payload.token
       })
       .addCase(loginUser.rejected, (state, action) => {
-          state.status = action.error.message
+          // state.status = action.error.message
+          state.status = action.payload?.message || 'Failed to login';
           state.isLoading = false
       })
       // Check auth
@@ -111,7 +142,8 @@ export const authSlice = createSlice({
           state.token = action.payload?.token
       })
       .addCase(getMe.rejected, (state, action) => {
-          state.status = action.error.message
+          // state.status = action.error.message //old
+          state.status = action.payload?.message || 'Failed to fetch user';
           state.isLoading = false
       })
   },
