@@ -19,14 +19,14 @@ export const createPost = createAsyncThunk(
     },
 )
 
-// export const getAllPosts = createAsyncThunk('post/getAllPosts', async () => {
-//     try {
-//         const { data } = await axios.get('/posts')
-//         return data
-//     } catch (error) {
-//         console.log(error)
-//     }
-// })
+export const getAllPosts = createAsyncThunk('post/getAllPosts', async () => {
+    try {
+        const { data } = await axios.get('/posts')
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 // export const removePost = createAsyncThunk('post/removePost', async (id) => {
 //     try {
@@ -57,7 +57,7 @@ export const postSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        // Handling createPost
+        // Post creating
         builder
             .addCase(createPost.pending, (state) => {
                 state.loading = true;
@@ -68,32 +68,23 @@ export const postSlice = createSlice({
             })
             .addCase(createPost.rejected, (state) => {
                 state.loading = false;
+            })
+        // Getting all posts
+            .addCase(getAllPosts.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getAllPosts.fulfilled, (state, action) => {
+                state.loading = false;
+                // state.posts.push(action.payload);
+                state.posts = action.payload.posts
+                state.popularPosts = action.payload.popularPosts
+            })
+            .addCase(getAllPosts.rejected, (state) => {
+                state.loading = false;
             });
 
-//     extraReducers: {
-// //         // Post creating
-//         [createPost.pending]: (state) => {
-//             state.loading = true
-//         },
-//         [createPost.fulfilled]: (state, action) => {
-//             state.loading = false
-//             state.posts.push(action.payload)
-//         },
-//         [createPost.rejected]: (state) => {
-//             state.loading = false
-//         },
-//         // Получаение всех постов
-//         [getAllPosts.pending]: (state) => {
-//             state.loading = true
-//         },
-//         [getAllPosts.fulfilled]: (state, action) => {
-//             state.loading = false
-//             state.posts = action.payload.posts
-//             state.popularPosts = action.payload.popularPosts
-//         },
-//         [getAllPosts.rejected]: (state) => {
-//             state.loading = false
-//         },
+
+
 //         // Удаление поста
 //         [removePost.pending]: (state) => {
 //             state.loading = true

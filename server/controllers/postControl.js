@@ -66,33 +66,33 @@ const createPost = async (req, res) => {
     }
 }
 
-// // Get All Posts
-// const getAll = async (req, res) => {
-//     try {
-//         const posts = await Post.find().sort('-createdAt')
-//         const popularPosts = await Post.find().limit(5).sort('-views')
+// Get All Posts
+const getAll = async (req, res) => {
+    try {
+        const posts = await Post.find().sort('-createdAt') //regular posts
+        const popularPosts = await Post.find().limit(5).sort('-views') // populer posts
 
-//         if (!posts) {
-//             return res.json({ message: 'Постов нет' })
-//         }
+        if (!posts) {
+            return res.json({ message: 'No posts' })
+        }
 
-//         res.json({ posts, popularPosts })
-//     } catch (error) {
-//         res.json({ message: 'Что-то пошло не так.' })
-//     }
-// }
+        res.json({ posts, popularPosts })
+    } catch (error) {
+        res.json({ message: 'Something went wrong.' })
+    }
+}
 
-// // Get Post By Id
-// const getById = async (req, res) => {
-//     try {
-//         const post = await Post.findByIdAndUpdate(req.params.id, {
-//             $inc: { views: 1 },
-//         })
-//         res.json(post)
-//     } catch (error) {
-//         res.json({ message: 'Что-то пошло не так.' })
-//     }
-// }
+// Get Post By Id
+const getById = async (req, res) => {
+    try {
+        const post = await Post.findByIdAndUpdate(req.params.id, { //get post and increase views
+            $inc: { views: 1 },
+        })
+        res.json(post)
+    } catch (error) {
+        res.json({ message: 'Something went wrong.' })
+    }
+}
 
 // // Get All Posts
 // const getMyPosts = async (req, res) => {
@@ -106,7 +106,7 @@ const createPost = async (req, res) => {
 
 //         res.json(list)
 //     } catch (error) {
-//         res.json({ message: 'Что-то пошло не так.' })
+//         res.json({ message: 'Something went wrong.' })
 //     }
 // }
 
@@ -114,15 +114,15 @@ const createPost = async (req, res) => {
 // const removePost = async (req, res) => {
 //     try {
 //         const post = await Post.findByIdAndDelete(req.params.id)
-//         if (!post) return res.json({ message: 'Такого поста не существует' })
+//         if (!post) return res.json({ message: 'No such post' })
 
 //         await User.findByIdAndUpdate(req.userId, {
 //             $pull: { posts: req.params.id },
 //         })
 
-//         res.json({ message: 'Пост был удален.' })
+//         res.json({ message: 'Posr was remove.' })
 //     } catch (error) {
-//         res.json({ message: 'Что-то пошло не так.' })
+//         res.json({ message: 'Something went wrong.' })
 //     }
 // }
 
@@ -146,7 +146,7 @@ const createPost = async (req, res) => {
 
 //         res.json(post)
 //     } catch (error) {
-//         res.json({ message: 'Что-то пошло не так.' })
+//         res.json({ message: 'Something went wrong.' })
 //     }
 // }
 
@@ -161,12 +161,14 @@ const createPost = async (req, res) => {
 //         )
 //         res.json(list)
 //     } catch (error) {
-//         res.json({ message: 'Что-то пошло не так.' })
+//         res.json({ message: 'Something went wrong.' })
 //     }
 // }
 
 module.exports = {
-    createPost
+    createPost,
+    getAll,
+    getById
     // logIn,
     // getProfile
 };
