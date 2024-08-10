@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const app = express();
 const auth_router = require("./router/authRout");
 const post_router = require("./router/postRout");
+const comment_router = require("./router/commentRout");
 const User = require('./models/User');
 const fileUpload = require('express-fileupload');
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(express.static('uploads'))
 
 app.use('/api/auth', auth_router );
 app.use('/api/posts', post_router );
+app.use('/api/comments', comment_router);
 
 app
     .get('/', (req, res) =>{

@@ -28,29 +28,31 @@ export const getAllPosts = createAsyncThunk('post/getAllPosts', async () => {
     }
 })
 
-// export const removePost = createAsyncThunk('post/removePost', async (id) => {
-//     try {
-//         const { data } = await axios.delete(`/posts/${id}`, id)
-//         return data
-//     } catch (error) {
-//         console.log(error)
-//     }
-// })
+//funcion remove post
+export const removePost = createAsyncThunk('post/removePost', async (id) => {
+    try {
+        //remove post by id
+        const { data } = await axios.delete(`/posts/${id}`, id)
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+})
 
-// export const updatePost = createAsyncThunk(
-//     'post/updatePost',
-//     async (updatedPost) => {
-//         try {
-//             const { data } = await axios.put(
-//                 `/posts/${updatedPost.id}`,
-//                 updatedPost,
-//             )
-//             return data
-//         } catch (error) {
-//             console.log(error)
-//         }
-//     },
-// )
+export const updatePost = createAsyncThunk(
+    'post/updatePost',
+    async (updatedPost) => {
+        try {
+            const { data } = await axios.put(
+                `/posts/${updatedPost.id}`,
+                updatedPost,
+            )
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    },
+)
 
 export const postSlice = createSlice({
     name: 'post',
@@ -69,7 +71,7 @@ export const postSlice = createSlice({
             .addCase(createPost.rejected, (state) => {
                 state.loading = false;
             })
-        // Getting all posts
+            // Getting all posts
             .addCase(getAllPosts.pending, (state) => {
                 state.loading = true;
             })
@@ -81,38 +83,39 @@ export const postSlice = createSlice({
             })
             .addCase(getAllPosts.rejected, (state) => {
                 state.loading = false;
+            })
+
+            // Remove the post
+            .addCase(removePost.pending, (state) => {
+                state.loading = true;//change loading
+            })
+            .addCase(removePost.fulfilled, (state, action) => {
+                state.loading = false; // desplay falls wheb delete
+                state.posts = state.posts.filter( // find in existied post in which
+                    // We have an array of posts, and we want to remove a specific post based on its unique ID (_id). 
+                    // We achieve this by using the filter() method, which creates a new array excluding the post with the specified ID.
+                    // and we asign new array to our state
+                    (post) => post._id !== action.payload._id,
+                )
+            })
+            .addCase(removePost.rejected, (state) => {
+                state.loading = false;
+            })
+            // Update post
+            .addCase(updatePost.pending, (state) => {
+                state.loading = true;//change loading
+            })
+            .addCase(updatePost.fulfilled, (state, action) => {
+                state.loading = false
+                const index = state.posts.findIndex(
+                    (post) => post._id === action.payload._id,
+                )
+                state.posts[index] = action.payload
+            })
+            .addCase(updatePost.pending, (state) => {
+                state.loading = false
             });
-
-
-
-//         // Удаление поста
-//         [removePost.pending]: (state) => {
-//             state.loading = true
-//         },
-//         [removePost.fulfilled]: (state, action) => {
-//             state.loading = false
-//             state.posts = state.posts.filter(
-//                 (post) => post._id !== action.payload._id,
-//             )
-//         },
-//         [removePost.rejected]: (state) => {
-//             state.loading = false
-//         },
-//         // Обновление поста
-//         [updatePost.pending]: (state) => {
-//             state.loading = true
-//         },
-//         [updatePost.fulfilled]: (state, action) => {
-//             state.loading = false
-//             const index = state.posts.findIndex(
-//                 (post) => post._id === action.payload._id,
-//             )
-//             state.posts[index] = action.payload
-//         },
-//         [updatePost.rejected]: (state) => {
-//             state.loading = false
-//         },
-    },
+    }
 })
 
 export default postSlice.reducer

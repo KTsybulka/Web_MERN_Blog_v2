@@ -13,8 +13,8 @@ export const MainPage = () => {
 
   useEffect(() => {
       dispatch(getAllPosts())
-  }, [dispatch])
-
+//   }, [dispatch])
+}, [])
   if (!posts.length) {
       return (
           <div className='text-xl text-center text-white py-10'>
