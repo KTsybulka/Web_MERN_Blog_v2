@@ -32,8 +32,8 @@ router.put('/:id', checkAuth, updatePost)
 // http://localhost:3002/api/posts/user/me
 router.get('/user/me', checkAuth, getMyPosts)
 
-// // Remove Post
-// // http://localhost:3002/api/posts/:id
+// Remove Post
+// http://localhost:3002/api/posts/:id
 router.delete('/:id', checkAuth, removePost)
 
 // Get Post Comments

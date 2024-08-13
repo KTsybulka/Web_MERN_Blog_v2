@@ -20,15 +20,17 @@ app.use(fileUpload())
 app.use(express.json()); // the data will come to server in JSON format
 app.use(express.static('uploads'))
 
+// Routes
+// http://localhost:3002
 app.use('/api/auth', auth_router );
 app.use('/api/posts', post_router );
 app.use('/api/comments', comment_router);
 
-app
-    .get('/', (req, res) =>{
-        User.find().then(users=>{console.log(users)})//Promis
-         res.json({message: 'Fine! '});
-    })
+// app
+//     .get('/', (req, res) =>{
+//         User.find().then(users=>{console.log(users)})//Promis
+//          res.json({message: 'Fine! '});
+//     })
 //DB connection
 async function start(){
     try{

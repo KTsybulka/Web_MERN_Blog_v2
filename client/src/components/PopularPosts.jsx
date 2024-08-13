@@ -10,9 +10,7 @@ export const PopularPosts = ({ post }) => {
             >
                 {post.title}
             </Link>
-            <div className='flex text-xs p-2 text-gray-300'>
-                {post.title}
-            </div>
+
         </div>
     )
 }

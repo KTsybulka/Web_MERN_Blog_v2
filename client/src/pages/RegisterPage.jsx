@@ -16,23 +16,23 @@ export const RegisterPage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   if (status) {
-  //     toast(status)
-  //   }
-  //   if (isAuth) navigate('/')
-  // }, [status, isAuth, navigate])
-
   useEffect(() => {
-    console.log('useEffect triggered');
     if (status) {
-      toast(status);
+      toast(status)
     }
-    if (isAuth) {
-      console.log('Navigating to home');
-      navigate('/');
-    }
-  }, [status, isAuth, navigate]);
+    if (isAuth) navigate('/')
+  }, [status, isAuth, navigate])
+
+  // useEffect(() => {
+  //   console.log('useEffect triggered');
+  //   if (status) {
+  //     toast(status);
+  //   }
+  //   if (isAuth) {
+  //     console.log('Navigating to home');
+  //     navigate('/');
+  //   }
+  // }, [status, isAuth, navigate]);
 
   const handleSubmit = () => {
     try {

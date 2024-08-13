@@ -32,7 +32,8 @@ export const getAllPosts = createAsyncThunk('post/getAllPosts', async () => {
 export const removePost = createAsyncThunk('post/removePost', async (id) => {
     try {
         //remove post by id
-        const { data } = await axios.delete(`/posts/${id}`, id)
+        // const { data } = await axios.delete(`/posts/${id}`, id) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        const { data } = await axios.delete(`/posts/${id}`)
         return data
     } catch (error) {
         console.log(error)
@@ -112,7 +113,7 @@ export const postSlice = createSlice({
                 )
                 state.posts[index] = action.payload
             })
-            .addCase(updatePost.pending, (state) => {
+            .addCase(updatePost.rejected, (state) => {
                 state.loading = false
             });
     }

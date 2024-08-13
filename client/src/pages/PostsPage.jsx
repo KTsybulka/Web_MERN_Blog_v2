@@ -11,7 +11,10 @@ export const PostsPage = () => {
 
   const fetchMyPosts = async () => {
       try {
-          const { data } = await axios.get('/posts/user/me')
+          const { data } = await axios.get('/posts/user/me')  //correct rout!!
+        //   const { data } = await axios.get('/posts/user/myprofile') // to avoid a visible error
+        
+          console.log("Fetched data:", data);
           setPosts(data)
       } catch (error) {
           console.log(error)
